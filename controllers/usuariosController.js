@@ -1,12 +1,15 @@
 const db = require('../db/config');
 
-// Obtener todos los usuarios
 exports.getUsers = (req, res) => {
   db.query('SELECT * FROM usuarios', (err, rows) => {
-    if (err) throw err;
+    if (err) {
+      console.error('Error al obtener usuarios:', err);
+      return res.status(500).json({ error: 'Error en el servidor' });
+    }
     res.json(rows);
   });
 };
+
 
 // Crear nuevo usuario
 exports.createUser = (req, res) => {

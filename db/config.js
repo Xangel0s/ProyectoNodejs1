@@ -1,26 +1,14 @@
+// db/config.js
 const mysql = require('mysql2');
 
-// Configura la conexión
-const connection = mysql.createConnection({
+const pool = mysql.createPool({
   host: 'localhost',
   user: 'root',
   password: '',
-  database: 'laboratorioKiller'
+  database: 'laboratorioKiller',
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
 });
 
-// Conecta
-connection.connect(err => {
-  if (err) {
-    return;
-  }
-  console.log('Conectado a la base de datos con ID ' + connection.threadId);
-});
-
-// Puedes hacer una consulta de prueba
-connection.query('SELECT NOW() AS ahora', (err, results) => {
-  if (err) throw err;
-  console.log('Fecha actual desde la DB:', results[0].ahora);
-  
-  // Cierra la conexión
-  connection.end();
-});
+module.exports = pool;
